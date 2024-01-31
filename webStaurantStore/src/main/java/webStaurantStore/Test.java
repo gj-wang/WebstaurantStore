@@ -3,9 +3,7 @@ package webStaurantStore;
 import java.text.MessageFormat;
 import java.time.Duration;
 import java.util.List;
-import java.util.Set;
 
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -36,9 +34,7 @@ public class Test {
 									.findElements(By.className("inline-block"));
 		
 		// loop through all the pages/items
-		for (int pIndex = 0; pIndex < pages.size(); pIndex++) {
-			System.out.println("=== " + pIndex);
-			
+		for (int pIndex = 0; pIndex < pages.size(); pIndex++) {		
 			// get all the items on a page
 			List<WebElement> items = driver
 										.findElement(By.id("product_listing"))
@@ -48,9 +44,10 @@ public class Test {
 				WebElement item = items.get(i);
 				String description = item.findElement(By.cssSelector("[data-testid='itemDescription']")).getText();
 
-				// Check if the product description contains the word "Table"
+				// Check if the product description contains the word "Table", if not, send warning to console
 				if(!description.contains(containString)) {
-					System.out.println("Item " + description + " does not conatian word " + containString );
+					System.out.println("=========");
+					System.out.println("\nItem " + description + " does not conatian word " + containString + "\n");
 				}
 			}
 
@@ -65,13 +62,10 @@ public class Test {
 			
 			// make sure the page is turned
 			int pNumber = pIndex + 2;  // page number is 2 ahead of index
-			
 			if (pNumber > pages.size()) {
 				break;
 			}
 			String pageStr = MessageFormat.format("current page, page {0}", pNumber);
-			System.out.println("pageStr: " + pageStr);
-
 			String newPage = driver.findElement(By.cssSelector("a[aria-label^='current page']")).getAttribute("aria-label");
 			String searchTxt = "a[aria-label='"+pageStr+"']";
 
@@ -94,7 +88,6 @@ public class Test {
 		WebElement modal = driver.findElement(By.cssSelector("footer[data-testid='modal-footer']"));
 		modal.findElement(By.xpath("button[contains(text(),'Empty')]")).click();
 		
-		Thread.sleep(3000);
 		driver.quit();
 	}
 }
